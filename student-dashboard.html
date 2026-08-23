@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Portal — MVR Dulux Boys Hostel</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dash-shell">
+
+<div class="dash-topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <span class="brand-mark">MD</span>
+      <span class="brand-name">MVR Dulux<small>Boys Hostel</small></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span class="muted" style="color:rgba(255,255,255,.7);font-size:.88rem;">Hi, <span id="studentGreeting"></span></span>
+      <button id="logoutBtn" class="btn btn-sm btn-ghost-light">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:30px;padding-bottom:70px;">
+
+  <div class="id-card">
+    <div class="id-photo" id="idInitials"></div>
+    <div class="id-info">
+      <h2 id="idName"></h2>
+      <span class="mono" id="idId"></span>
+      <div class="id-meta">
+        <div>Room <span id="idRoom"></span></div>
+        <div>Block <span id="idBlock"></span></div>
+        <div>Sharing <span id="idSharing"></span></div>
+        <div>Course <span id="idCourse"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs-row">
+    <button class="tab-btn active" data-tab="tab-profile">Profile</button>
+    <button class="tab-btn" data-tab="tab-outing">Outing <span id="outingTabPill" class="status-pill status-approved" style="margin-left:6px;">Present</span></button>
+    <button class="tab-btn" data-tab="tab-report">Reports (<span id="reportCount">0</span>)</button>
+    <button class="tab-btn" data-tab="tab-notices">Notices</button>
+  </div>
+
+  <div id="tab-profile" class="tab-panel active">
+    <div class="card">
+      <h3>Your details</h3>
+      <p class="muted" style="margin-bottom:20px;">On file with the hostel admin. Contact the warden if anything here needs correcting.</p>
+      <div class="form-grid">
+        <div><div class="eyebrow">Course &amp; year</div><p id="profCourse" style="margin-top:4px;"></p></div>
+        <div><div class="eyebrow">Joined hostel on</div><p id="profJoined" style="margin-top:4px;"></p></div>
+        <div><div class="eyebrow">Guardian contact</div><p id="profGuardian" style="margin-top:4px;"></p></div>
+        <div><div class="eyebrow">Your contact</div><p id="profContact" style="margin-top:4px;"></p></div>
+        <div><div class="eyebrow">Aadhaar number</div><p id="profAadhaar" style="margin-top:4px;" class="mono"></p></div>
+        <div><div class="eyebrow">Blood group</div><p id="profBlood" style="margin-top:4px;"></p></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-outing" class="tab-panel">
+    <div class="card">
+      <h3>Are you in the hostel?</h3>
+      <p class="muted">This just tells the kitchen how many people to cook for — nothing more.</p>
+      <div id="presenceBlock"></div>
+    </div>
+  </div>
+
+  <div id="tab-report" class="tab-panel">
+    <div class="card">
+      <h3>Report an issue</h3>
+      <p class="muted" id="reportMsg" style="min-height:1.2em;">Maintenance, mess, safety or anything else — this goes straight to the admin.</p>
+      <form id="reportForm">
+        <div class="field">
+          <label for="repCategory">Category</label>
+          <select id="repCategory" required>
+            <option>Maintenance</option>
+            <option>Mess / Food</option>
+            <option>Safety / Security</option>
+            <option>Housekeeping</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label for="repDesc">Description</label><textarea id="repDesc" rows="3" required placeholder="What's the issue? Where?"></textarea></div>
+        <button class="btn btn-ink" type="submit">Submit report</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Your reports</h3>
+      <div id="reportList"></div>
+    </div>
+  </div>
+
+  <div id="tab-notices" class="tab-panel">
+    <div class="card">
+      <h3>Hostel notices</h3>
+      <div class="notice-list" id="noticeList"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

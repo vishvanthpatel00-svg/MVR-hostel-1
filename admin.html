@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — MVR Dulux Boys Hostel</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dash-shell">
+
+<div class="dash-topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <span class="brand-mark">MD</span>
+      <span class="brand-name">MVR Dulux<small>Admin / Warden</small></span>
+    </a>
+    <button id="logoutBtn" class="btn btn-sm btn-ghost-light">Sign out</button>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:30px;padding-bottom:70px;">
+
+  <div class="admin-stats">
+    <div class="stat-card"><span class="eyebrow">Total students</span><b id="statStudents">0</b></div>
+    <div class="stat-card"><span class="eyebrow">Present today</span><b id="statPresent">0</b></div>
+    <div class="stat-card"><span class="eyebrow">Away today</span><b id="statAway">0</b></div>
+    <div class="stat-card"><span class="eyebrow">Open reports</span><b id="statOpenReports">0</b></div>
+  </div>
+
+  <div class="tabs-row">
+    <button class="tab-btn active" data-tab="tab-students">Students</button>
+    <button class="tab-btn" data-tab="tab-outings">Headcount</button>
+    <button class="tab-btn" data-tab="tab-reports">Reports</button>
+    <button class="tab-btn" data-tab="tab-notices">Notices</button>
+  </div>
+
+  <div id="tab-students" class="tab-panel active">
+    <div class="admin-toolbar">
+      <input id="studentSearch" type="text" placeholder="Search name, ID or room…" style="min-width:220px;">
+      <select id="blockFilter">
+        <option value="">All blocks</option>
+        <option>A Block</option>
+        <option>B Block</option>
+        <option>C Block</option>
+      </select>
+      <button class="btn btn-sm btn-outline" id="exportStudents" style="margin-left:auto;">Export CSV</button>
+    </div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>ID</th><th>Student</th><th>Room</th><th>Contact</th><th>Aadhaar</th><th>Status</th></tr></thead>
+        <tbody id="studentTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-outings" class="tab-panel">
+    <div class="admin-toolbar">
+      <span class="muted" style="font-size:.85rem;" id="headcountSummary">Loading…</span>
+      <button class="btn btn-sm btn-outline" id="exportPresence" style="margin-left:auto;">Export CSV</button>
+    </div>
+    <p class="muted" style="font-size:.82rem;margin-bottom:14px;">This is just a headcount for the kitchen — who's away and when they're back. Nothing here needs approval.</p>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>Student</th><th>Room</th><th>Days away</th><th>Back by</th></tr></thead>
+        <tbody id="headcountTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-reports" class="tab-panel">
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>ID</th><th>Student</th><th>Category</th><th>Description</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="reportTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-notices" class="tab-panel">
+    <div class="card">
+      <h3>Post a notice</h3>
+      <p class="muted">Shows up in the visitor portal ticker and every student's Notices tab.</p>
+      <form id="noticeForm">
+        <div class="field"><label for="noticeTitle">Title</label><input id="noticeTitle" required></div>
+        <div class="field"><label for="noticeBody">Details</label><textarea id="noticeBody" rows="2" required></textarea></div>
+        <button class="btn btn-ink" type="submit">Post notice</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Recent notices</h3>
+      <div class="notice-list" id="adminNoticeList"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

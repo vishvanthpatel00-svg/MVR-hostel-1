@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — MVR Dulux Boys Hostel</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+
+  <div class="login-card">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <span class="brand-mark">MD</span>
+      <span class="brand-name">MVR Dulux<small>Boys Hostel</small></span>
+    </a>
+
+    <div class="login-tabs">
+      <button type="button" data-role="student" class="active">Student</button>
+      <button type="button" data-role="admin">Warden / Admin</button>
+    </div>
+
+    <p class="eyebrow" id="roleField" style="margin-bottom:14px;">Student sign in</p>
+
+    <div id="loginError" class="login-error"></div>
+
+    <form id="loginForm">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" type="text" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn-ink btn-block" type="submit">Sign in</button>
+    </form>
+
+    <div class="demo-box" id="demoBox">Demo login — username <b>arjun101</b>, password <b>hostel@123</b></div>
+    <p class="muted" style="font-size:.78rem;margin-top:16px;text-align:center;">
+      <a href="visitor.html" style="text-decoration:underline;">← Back to visitor portal</a>
+    </p>
+  </div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>
