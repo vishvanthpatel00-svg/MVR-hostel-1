@@ -22,8 +22,7 @@
   document.getElementById('profGuardian').textContent = student.guardian;
   document.getElementById('profContact').textContent = student.contact;
   document.getElementById('profAadhaar').textContent = maskAadhaar(student.aadhaar);
-  document.getElementById('profBlood').textContent = student.bloodGroup;
-
+  document.getElementById('profRollNumber').textContent = student.rollNumber;
   document.getElementById('logoutBtn').addEventListener('click', ()=>{
     clearSession();
     window.location.href = 'index.html';
