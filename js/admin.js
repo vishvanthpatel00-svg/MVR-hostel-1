@@ -33,24 +33,54 @@
   }
 
   /* ---- students table ---- */
+  function populateRoomFilter(){
+    const sel = document.getElementById('roomFilter');
+    const current = sel.value;
+    const rooms = [...new Set(getStudents().map(s => s.room).filter(Boolean))]
+      .sort((a,b)=> a.localeCompare(b, undefined, {numeric:true}));
+    sel.innerHTML = '<option value="">All rooms</option>' + rooms.map(r => `<option>${r}</option>`).join('');
+    if(rooms.includes(current)) sel.value = current;
+  }
   function renderStudents(){
     const q = (document.getElementById('studentSearch').value || '').toLowerCase();
-    const block = document.getElementById('blockFilter').value;
+    const room = document.getElementById('roomFilter').value;
     let rows = getStudents();
     if(q) rows = rows.filter(s => s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) || s.room.toLowerCase().includes(q));
-    if(block) rows = rows.filter(s => s.block === block);
+    if(room) rows = rows.filter(s => s.room === room);
     document.getElementById('studentTable').innerHTML = rows.map(s => `
       <tr>
         <td class="idcell">${s.id}</td>
-        <td><b>${s.name}</b><br><span class="muted">${s.course}</span></td>
-        <td>${s.room}<br><span class="muted">${s.block} · ${s.sharing}</span></td>
-        <td>${s.contact}</td>
+        <td><b>${s.name}</b><br><span class="muted">${s.course || '—'}</span>
+          ${s.loginReady ? '' : '<br><span class="login-pill pending">Needs mobile / login</span>'}
+          ${s.registerNote ? `<br><span class="muted" style="font-size:.72rem;">⚠ ${s.registerNote}</span>` : ''}
+        </td>
+        <td>${s.room}<br><span class="muted">${[s.block, s.sharing].filter(Boolean).join(' · ') || '—'}</span></td>
+        <td>${s.contact || '—'}</td>
         <td class="idcell">${maskAadhaar(s.aadhaar)}</td>
         <td>${isAway(s.id) ? '<span class="status-pill status-pending">Away</span>' : '<span class="status-pill status-approved">Present</span>'}</td>
-      </tr>`).join('') || `<tr><td colspan="6" class="empty-state">No students match that search.</td></tr>`;
+        <td>
+          <div class="row-actions">
+            <button class="btn btn-sm btn-outline" data-edit="${s.id}">Edit</button>
+            <button class="btn btn-sm btn-outline" data-delete="${s.id}">Remove</button>
+          </div>
+        </td>
+      </tr>`).join('') || `<tr><td colspan="7" class="empty-state">No students match that search.</td></tr>`;
+
+    document.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click', ()=> openStudentModal(b.dataset.edit)));
+    document.querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click', ()=>{
+      const s = getStudentById(b.dataset.delete);
+      if(!s) return;
+      if(confirm(`Remove ${s.name} (Room ${s.room}) from the hostel roster? This can't be undone.`)){
+        deleteStudent(s.id);
+        populateRoomFilter();
+        renderStudents();
+        renderStats();
+        renderHeadcount();
+      }
+    }));
   }
   document.getElementById('studentSearch').addEventListener('input', renderStudents);
-  document.getElementById('blockFilter').addEventListener('change', renderStudents);
+  document.getElementById('roomFilter').addEventListener('change', renderStudents);
   document.getElementById('exportStudents').addEventListener('click', ()=>{
     const csv = toCSV(getStudents(), [
       {label:'ID', get:s=>s.id}, {label:'Name', get:s=>s.name}, {label:'Course', get:s=>s.course},
@@ -58,6 +88,68 @@
       {label:'Contact', get:s=>s.contact}, {label:'Guardian', get:s=>s.guardian}, {label:'Aadhaar', get:s=>maskAadhaar(s.aadhaar)}
     ]);
     downloadCSV('mvr-students.csv', csv);
+  });
+
+  /* ---- add / edit student modal ---- */
+  const studentModal = document.getElementById('studentModal');
+  const studentForm = document.getElementById('studentForm');
+
+  function openStudentModal(id){
+    const s = id ? getStudentById(id) : null;
+    document.getElementById('studentModalTitle').textContent = s ? `Edit ${s.name}` : 'Add student';
+    document.getElementById('sfId').value = s ? s.id : '';
+    document.getElementById('sfName').value = s ? s.name : '';
+    document.getElementById('sfRoom').value = s ? s.room : '';
+    document.getElementById('sfContact').value = s ? s.contact : '';
+    document.getElementById('sfUsername').value = s ? s.username : '';
+    document.getElementById('sfPassword').value = s ? s.password : 'hostel@123';
+    document.getElementById('sfJoined').value = s ? s.joined : new Date().toISOString().slice(0,10);
+    document.getElementById('sfCourse').value = s ? s.course : '';
+    document.getElementById('sfSharing').value = s ? s.sharing : '';
+    document.getElementById('sfGuardian').value = s ? s.guardian : '';
+    document.getElementById('sfBloodGroup').value = s ? s.bloodGroup : '';
+    document.getElementById('sfRollNumber').value = s ? s.rollNumber : '';
+    document.getElementById('sfAadhaar').value = s ? s.aadhaar : '';
+    document.getElementById('sfNote').value = s ? s.registerNote : '';
+    studentModal.classList.add('open');
+  }
+  function closeStudentModal(){ studentModal.classList.remove('open'); studentForm.reset(); }
+
+  document.getElementById('addStudentBtn').addEventListener('click', ()=> openStudentModal(null));
+  document.getElementById('studentModalClose').addEventListener('click', closeStudentModal);
+  document.getElementById('studentModalCancel').addEventListener('click', closeStudentModal);
+  studentModal.addEventListener('click', (e)=>{ if(e.target === studentModal) closeStudentModal(); });
+
+  studentForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const id = document.getElementById('sfId').value;
+    const contact = document.getElementById('sfContact').value.trim();
+    const usernameInput = document.getElementById('sfUsername').value.trim();
+    const payload = {
+      name: document.getElementById('sfName').value.trim(),
+      room: document.getElementById('sfRoom').value.trim(),
+      contact,
+      username: usernameInput || contact,
+      password: document.getElementById('sfPassword').value.trim() || 'hostel@123',
+      joined: document.getElementById('sfJoined').value,
+      course: document.getElementById('sfCourse').value.trim(),
+      sharing: document.getElementById('sfSharing').value.trim(),
+      guardian: document.getElementById('sfGuardian').value.trim(),
+      bloodGroup: document.getElementById('sfBloodGroup').value.trim(),
+      rollNumber: document.getElementById('sfRollNumber').value.trim(),
+      aadhaar: document.getElementById('sfAadhaar').value.trim(),
+      registerNote: document.getElementById('sfNote').value.trim()
+    };
+    if(id){
+      updateStudent(id, payload);
+    }else{
+      addStudent(payload);
+    }
+    closeStudentModal();
+    populateRoomFilter();
+    renderStudents();
+    renderStats();
+    renderHeadcount();
   });
 
   /* ---- headcount (read-only — this replaces the old outing-approval queue) ---- */
@@ -134,6 +226,7 @@
   });
 
   renderStats();
+  populateRoomFilter();
   renderStudents();
   renderHeadcount();
   renderReports();
