@@ -1,5 +1,5 @@
 /* ============================================================
-   MVR DULUX BOYS HOSTEL — shared stylesheet
+   MVR DELUXE BOYS HOSTEL — shared stylesheet
    Design tokens
    ============================================================ */
 
@@ -92,8 +92,7 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
 .site-nav .wrap{ display:flex; align-items:center; justify-content:space-between; padding:14px 24px; }
 .brand{ display:flex; align-items:center; gap:.6em; text-decoration:none; color:#fff; }
 .brand-mark{
-  width:34px; height:34px; border-radius:9px; background:var(--amber); color:var(--ink);
-  display:flex; align-items:center; justify-content:center; font-family:var(--f-mono); font-weight:700; font-size:.85rem;
+  width:38px; height:38px; border-radius:9px; object-fit:cover; display:block; flex-shrink:0;
 }
 .brand-name{ font-family:var(--f-display); font-weight:600; font-size:1.05rem; letter-spacing:.01em; }
 .brand-name small{ display:block; font-family:var(--f-mono); font-size:.62rem; letter-spacing:.12em; color:var(--amber); text-transform:uppercase; font-weight:600; }
@@ -210,6 +209,18 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
   .album{ grid-template-columns:repeat(2,1fr); grid-auto-rows:150px; }
   .album a, .album a.big, .album a.wide{ grid-column:span 1; grid-row:span 1; }
 }
+
+/* admin: add/edit student modal */
+.modal{ position:fixed; inset:0; background:rgba(13,18,35,.6); display:none; align-items:flex-start; justify-content:center; z-index:110; padding:40px 16px; overflow-y:auto; }
+.modal.open{ display:flex; }
+.modal-card{ background:#fff; border-radius:var(--radius); max-width:640px; width:100%; padding:26px; box-shadow:var(--shadow-2); }
+.modal-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+.modal-head h3{ margin:0; }
+.modal-close{ background:none; border:none; font-size:1.6rem; line-height:1; cursor:pointer; color:var(--slate-soft); padding:0 4px; }
+.modal-close:hover{ color:var(--ink); }
+.login-pill{ display:inline-block; padding:.2em .6em; border-radius:999px; font-size:.7rem; font-weight:600; }
+.login-pill.ready{ background:#E5F5EA; color:#1E7B3D; }
+.login-pill.pending{ background:#FDECEC; color:#B3261E; }
 
 /* lightbox */
 .lightbox{ position:fixed; inset:0; background:rgba(13,18,35,.94); display:none; align-items:center; justify-content:center; z-index:100; padding:30px; }
