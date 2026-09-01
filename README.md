@@ -1,4 +1,4 @@
-# MVR Dulux Boys Hostel — website
+# MVR Deluxe Boys Hostel — website
 
 A real, working site: a gate page that splits into a **Visitor Portal** and a
 **Student Portal**, plus an **Admin (warden) dashboard**. No build tools —
@@ -27,12 +27,19 @@ Open `index.html` in a browser. Everything works immediately because the
 "database" lives in the browser's **localStorage** — there's nothing to
 install.
 
-**Demo logins**
+**Logins**
+
+The site now ships with the real 84-student roster from your room register
+instead of demo students. For any student whose mobile number was recorded
+in the register, their **username is that 10-digit mobile number** and
+their password is `hostel@123`. For students whose mobile wasn't recorded
+(about 66 of them), a placeholder username was generated from their name —
+open the admin Students tab, look for the "Needs mobile / login" tag on
+their row, and use Edit to add their real mobile number (which becomes
+their username) once you have it.
+
 | Portal | Username | Password |
 |---|---|---|
-| Student | `arjun101` | `hostel@123` |
-| Student | `karthik102` | `hostel@123` |
-| Student | `sameer103` | `hostel@123` |
 | Warden / Admin | `admin` | `admin@123` |
 
 **To see the full loop live:** open the site in two browser tabs. Sign in as
@@ -71,34 +78,32 @@ address. To replace one:
 Search each file for these placeholders and replace them:
 - `+919000000000` — phone number, appears in `visitor.html` (call link,
   WhatsApp float button) and the footer.
-- `admissions@mvrdulux.example` — email, in `visitor.html`.
+- `admissions@mvrdeluxe.example` — email, in `visitor.html`.
 - The address line in the footer of `visitor.html` ("Address and map link
   to be added here").
 
 ## 3. Add, edit or remove students
 
-Open `js/data.js` and edit the `SEED_STUDENTS` array. Each student is one
-object:
-```js
-{
-  id: 'MVR24-104',
-  username: 'newstudent',
-  password: 'hostel@123',
-  name: 'Student Name',
-  course: 'B.Tech CSE, I Year',
-  block: 'A Block',
-  room: 'A-101',
-  sharing: '4-Sharing',
-  joined: '2026-08-01',
-  guardian: 'Parent Name · phone',
-  contact: 'student phone',
-  aadhaar: '123456789012',
-  bloodGroup: 'O+'
-}
-```
-This only takes effect for **new** visitors, because existing browsers
-already have data saved. To force a reset while testing, open the browser
-console on any page and run `localStorage.clear()`, then reload.
+Do this from the **Admin portal** now — sign in as warden, go to the
+Students tab:
+- **+ Add student** opens a blank form.
+- **Edit** on any row opens the same form pre-filled, including their
+  course, guardian contact, blood group, roll number and Aadhaar — all of
+  which are blank on the real roster because the paper register didn't
+  record them. Fill these in as you collect them.
+- **Remove** deletes a student who's left the hostel (asks you to confirm
+  first).
+
+All three write straight to `js/data.js`'s storage — no file editing
+needed, and no `localStorage.clear()` needed either. (If you ever *do*
+want to hand-edit the seed data directly, it's still the `SEED_STUDENTS`
+array at the top of `js/data.js` — but anything typed there only applies
+to a browser that has never opened the site before; the admin portal is
+the way to change data for people already using it.)
+
+A student with an ⚠ note on their row in the Students tab means something
+on the original register photo was unclear (a smudge, a rotated page, a
+possible duplicate) — worth a quick check against the paper register.
 
 ## 4. Important — read before using this with real students
 
