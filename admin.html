@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — MVR Dulux Boys Hostel</title>
+<title>Admin — MVR Deluxe Boys Hostel</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="dash-shell">
@@ -11,8 +12,8 @@
 <div class="dash-topbar">
   <div class="wrap">
     <a class="brand" href="index.html" style="text-decoration:none;">
-      <span class="brand-mark">MD</span>
-      <span class="brand-name">MVR Dulux<small>Admin / Warden</small></span>
+      <img class="brand-mark" src="images/mvr-logo.png" alt="MVR Deluxe Boys Hostel logo">
+      <span class="brand-name">MVR Deluxe<small>Admin / Warden</small></span>
     </a>
     <button id="logoutBtn" class="btn btn-sm btn-ghost-light">Sign out</button>
   </div>
@@ -37,19 +38,49 @@
   <div id="tab-students" class="tab-panel active">
     <div class="admin-toolbar">
       <input id="studentSearch" type="text" placeholder="Search name, ID or room…" style="min-width:220px;">
-      <select id="blockFilter">
-        <option value="">All blocks</option>
-        <option>A Block</option>
-        <option>B Block</option>
-        <option>C Block</option>
+      <select id="roomFilter">
+        <option value="">All rooms</option>
       </select>
+      <button class="btn btn-sm btn-ink" id="addStudentBtn">+ Add student</button>
       <button class="btn btn-sm btn-outline" id="exportStudents" style="margin-left:auto;">Export CSV</button>
     </div>
     <div class="table-scroll">
       <table class="data-table">
-        <thead><tr><th>ID</th><th>Student</th><th>Room</th><th>Contact</th><th>Aadhaar</th><th>Status</th></tr></thead>
+        <thead><tr><th>ID</th><th>Student</th><th>Room</th><th>Contact</th><th>Aadhaar</th><th>Status</th><th>Action</th></tr></thead>
         <tbody id="studentTable"></tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- Add / edit student modal -->
+  <div class="modal" id="studentModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="studentModalTitle">Add student</h3>
+        <button type="button" class="modal-close" id="studentModalClose" aria-label="Close">&times;</button>
+      </div>
+      <form id="studentForm">
+        <input type="hidden" id="sfId">
+        <div class="form-grid">
+          <div class="field"><label for="sfName">Full name</label><input id="sfName" required></div>
+          <div class="field"><label for="sfRoom">Room number</label><input id="sfRoom" placeholder="e.g. 4/B" required></div>
+          <div class="field"><label for="sfContact">Mobile number</label><input id="sfContact" placeholder="10-digit mobile"></div>
+          <div class="field"><label for="sfUsername">Login username</label><input id="sfUsername" placeholder="defaults to mobile number"></div>
+          <div class="field"><label for="sfPassword">Login password</label><input id="sfPassword" placeholder="hostel@123"></div>
+          <div class="field"><label for="sfJoined">Date joined</label><input id="sfJoined" type="date"></div>
+          <div class="field"><label for="sfCourse">Course &amp; year</label><input id="sfCourse"></div>
+          <div class="field"><label for="sfSharing">Sharing type</label><input id="sfSharing" placeholder="4-Sharing / 5-Sharing / 8-Sharing"></div>
+          <div class="field"><label for="sfGuardian">Guardian contact</label><input id="sfGuardian"></div>
+          <div class="field"><label for="sfBloodGroup">Blood group</label><input id="sfBloodGroup"></div>
+          <div class="field"><label for="sfRollNumber">College roll number</label><input id="sfRollNumber"></div>
+          <div class="field"><label for="sfAadhaar">Aadhaar number</label><input id="sfAadhaar"></div>
+        </div>
+        <div class="field"><label for="sfNote">Note (visible to admin only)</label><textarea id="sfNote" rows="2"></textarea></div>
+        <div class="row-actions" style="justify-content:flex-end;">
+          <button type="button" class="btn btn-outline" id="studentModalCancel">Cancel</button>
+          <button type="submit" class="btn btn-ink">Save student</button>
+        </div>
+      </form>
     </div>
   </div>
 
