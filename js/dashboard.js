@@ -8,21 +8,22 @@
   if(!student){ clearSession(); window.location.href = 'login.html'; return; }
 
   /* ---- header / ID card ---- */
+  const orDash = v => (v && String(v).trim()) ? v : '—';
   document.getElementById('studentGreeting').textContent = student.name.split(' ')[0];
   document.getElementById('idInitials').textContent = student.name.split(' ').map(n=>n[0]).join('').slice(0,2);
   document.getElementById('idName').textContent = student.name;
   document.getElementById('idId').textContent = student.id;
-  document.getElementById('idRoom').innerHTML = `<b>${student.room}</b>`;
-  document.getElementById('idBlock').innerHTML = `<b>${student.block}</b>`;
-  document.getElementById('idSharing').innerHTML = `<b>${student.sharing}</b>`;
-  document.getElementById('idCourse').innerHTML = `<b>${student.course}</b>`;
+  document.getElementById('idRoom').innerHTML = `<b>${orDash(student.room)}</b>`;
+  document.getElementById('idBlock').innerHTML = `<b>${orDash(student.block)}</b>`;
+  document.getElementById('idSharing').innerHTML = `<b>${orDash(student.sharing)}</b>`;
+  document.getElementById('idCourse').innerHTML = `<b>${orDash(student.course)}</b>`;
 
-  document.getElementById('profCourse').textContent = student.course;
-  document.getElementById('profJoined').textContent = student.joined;
-  document.getElementById('profGuardian').textContent = student.guardian;
-  document.getElementById('profContact').textContent = student.contact;
+  document.getElementById('profCourse').textContent = orDash(student.course);
+  document.getElementById('profJoined').textContent = orDash(student.joined);
+  document.getElementById('profGuardian').textContent = orDash(student.guardian);
+  document.getElementById('profContact').textContent = orDash(student.contact);
   document.getElementById('profAadhaar').textContent = maskAadhaar(student.aadhaar);
-  document.getElementById('profRollNumber').textContent = student.rollNumber;
+  document.getElementById('profRollNumber').textContent = orDash(student.rollNumber);
   document.getElementById('logoutBtn').addEventListener('click', ()=>{
     clearSession();
     window.location.href = 'index.html';
