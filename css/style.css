@@ -288,10 +288,65 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
 .cta-band h3{ margin:0; font-size:1.5rem; }
 .cta-band p{ margin:.3em 0 0; color:var(--slate-soft); }
 
-/* whatsapp float button */
+/* floating Maps + WhatsApp buttons */
+.map-float,
 .wa-float{
-  position:fixed; right:22px; bottom:22px; width:56px; height:56px; border-radius:50%; background:#25D366; color:#fff;
-  display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px -8px rgba(0,0,0,.4); z-index:60; text-decoration:none;
+  position:fixed;
+  right:22px;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 10px 24px -8px rgba(0,0,0,.4);
+  z-index:60;
+  text-decoration:none;
+  animation:floatPulse 1.8s infinite;
+}
+
+.map-float{
+  bottom:90px;
+  background:#fff;
+}
+
+.wa-float{
+  bottom:22px;
+  background:#25D366;
+  color:#fff;
+}
+
+.map-float img{
+  width:34px;
+  height:34px;
+  object-fit:contain;
+}
+
+@keyframes floatPulse{
+  0%{
+    transform:scale(1);
+  }
+  50%{
+    transform:scale(1.08);
+  }
+  100%{
+    transform:scale(1);
+  }
+}
+
+@media(max-width:720px){
+  .map-float,
+  .wa-float{
+    right:18px;
+  }
+
+  .map-float{
+    bottom:88px;
+  }
+
+  .wa-float{
+    bottom:18px;
+  }
 }
 
 /* ============================================================
