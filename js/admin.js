@@ -102,7 +102,7 @@
     document.getElementById('sfRoom').value = s ? s.room : '';
     document.getElementById('sfContact').value = s ? s.contact : '';
     document.getElementById('sfUsername').value = s ? s.username : '';
-    document.getElementById('sfPassword').value = s ? s.password : 'hostel@123';
+    document.getElementById('sfPassword').value = s ? s.password : '';
     document.getElementById('sfJoined').value = s ? s.joined : new Date().toISOString().slice(0,10);
     document.getElementById('sfCourse').value = s ? s.course : '';
     document.getElementById('sfSharing').value = s ? s.sharing : '';
@@ -130,7 +130,7 @@
       room: document.getElementById('sfRoom').value.trim(),
       contact,
       username: usernameInput || contact,
-      password: document.getElementById('sfPassword').value.trim() || 'hostel@123',
+      password: document.getElementById('sfPassword').value.trim(),
       joined: document.getElementById('sfJoined').value,
       course: document.getElementById('sfCourse').value.trim(),
       sharing: document.getElementById('sfSharing').value.trim(),
