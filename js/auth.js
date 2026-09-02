@@ -7,7 +7,7 @@
   const form = document.getElementById('loginForm');
   const errorBox = document.getElementById('loginError');
   const roleField = document.getElementById('roleField');
-  const demoBox = document.getElementById('demoBox');
+  
   let role = 'student';
 
   tabs.forEach(btn=>{
@@ -16,9 +16,9 @@
       btn.classList.add('active');
       role = btn.dataset.role;
       roleField.textContent = role === 'admin' ? 'Warden / Admin sign in' : 'Student sign in';
-      demoBox.innerHTML = role === 'admin'
-        ? 'Demo login — username <b>admin</b>, password <b>admin@123</b>'
-        : 'Demo login — username <b>arjun101</b>, password <b>hostel@123</b>';
+      btn.classList.add('active');
+      role = btn.dataset.role;
+      roleField.textContent = role === 'admin' ? 'Warden / Admin sign in' : 'Student sign in';
       errorBox.classList.remove('show');
     });
   });
