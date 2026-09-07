@@ -100,51 +100,37 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
   flex-shrink:0;
 
   /* Premium logo highlight */
- 
-  animation:
-    mvrLogoEntrance 1.4s cubic-bezier(.2,.8,.2,1) forwards,
-    mvrLogoGlow 2.5s ease-in-out 1.4s infinite;
-}
+  filter:
+  .gate-masthead .gate-logo{
+  width:96px;
+  height:96px;
+  border-radius:20px;
+  object-fit:contain;
 
-@keyframes mvrLogoEntrance{
+  animation: mvrLogoReveal 1.4s cubic-bezier(.2,.8,.2,1) both;
+
+  filter: drop-shadow(0 0 5px rgba(255,255,255,.85))
+          drop-shadow(0 0 12px rgba(255,193,7,.65))
+          drop-shadow(0 0 25px rgba(255,193,7,.35));
+}
+   @keyframes mvrLogoReveal{
   0%{
     opacity:0;
-    transform:scale(.45) rotate(-8deg);
-    filter:
-      drop-shadow(0 0 0 rgba(255,193,7,0));
+    transform:scale(.65);
+    filter:drop-shadow(0 0 0 rgba(255,193,7,0));
   }
 
-  55%{
+  45%{
     opacity:1;
-    transform:scale(1.18) rotate(2deg);
-    filter:
-      drop-shadow(0 0 18px rgba(255,193,7,1))
-      drop-shadow(0 0 35px rgba(255,193,7,.8));
-  }
-
-  75%{
-    transform:scale(.96) rotate(0deg);
+    transform:scale(1.08);
+    filter:drop-shadow(0 0 18px rgba(255,193,7,.9))
+            drop-shadow(0 0 35px rgba(255,193,7,.55));
   }
 
   100%{
     opacity:1;
     transform:scale(1);
-  }
-}
-
-@keyframes mvrLogoGlow{
-  0%,100%{
-    filter:
-      drop-shadow(0 0 5px rgba(255,255,255,.9))
-      drop-shadow(0 0 15px rgba(255,193,7,.75))
-      drop-shadow(0 0 28px rgba(255,193,7,.4));
-  }
-
-  50%{
-    filter:
-      drop-shadow(0 0 8px rgba(255,255,255,1))
-      drop-shadow(0 0 25px rgba(255,193,7,1))
-      drop-shadow(0 0 45px rgba(255,193,7,.7));
+    filter:none;
   }
 }
 .brand-name{ font-family:var(--f-display); font-weight:600; font-size:1.05rem; letter-spacing:.01em; }
