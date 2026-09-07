@@ -98,22 +98,42 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
   object-fit:contain;
   display:block;
   flex-shrink:0;
+}
 
-  /* Premium logo highlight */
-  filter:
-  .gate-masthead .gate-logo{
+/* ---------- Opening logo animation ---------- */
+/* Use this class only for the logo on the landing/opening page */
+.gate-masthead .gate-logo{
   width:96px;
   height:96px;
   border-radius:20px;
   object-fit:contain;
+  display:block;
+  flex-shrink:0;
 
-  animation: mvrLogoReveal 1.4s cubic-bezier(.2,.8,.2,1) both;
-
-  filter: drop-shadow(0 0 5px rgba(255,255,255,.85))
-          drop-shadow(0 0 12px rgba(255,193,7,.65))
-          drop-shadow(0 0 25px rgba(255,193,7,.35));
+  animation:mvrLogoReveal 1.4s cubic-bezier(.2,.8,.2,1) both;
 }
-   @keyframes mvrLogoReveal{
+
+@keyframes mvrLogoReveal{
+  0%{
+    opacity:0;
+    transform:scale(.65);
+    filter:drop-shadow(0 0 0 rgba(255,193,7,0));
+  }
+
+  45%{
+    opacity:1;
+    transform:scale(1.08);
+    filter:
+      drop-shadow(0 0 12px rgba(255,193,7,.7))
+      drop-shadow(0 0 24px rgba(255,193,7,.4));
+  }
+
+  100%{
+    opacity:1;
+    transform:scale(1);
+    filter:none;
+  }
+}
   0%{
     opacity:0;
     transform:scale(.65);
