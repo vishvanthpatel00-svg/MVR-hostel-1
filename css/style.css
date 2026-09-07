@@ -110,45 +110,44 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
   display:block;
   flex-shrink:0;
 
-  animation:mvrLogoReveal 1.4s cubic-bezier(.2,.8,.2,1) both;
+  animation:mvrLogoHighlight 4s ease-in-out 1;
 }
 
-@keyframes mvrLogoReveal{
+@keyframes mvrLogoHighlight{
+
+  /* Website opens — normal */
   0%{
-    opacity:0;
-    transform:scale(.65);
-    filter:drop-shadow(0 0 0 rgba(255,193,7,0));
-  }
-
-  45%{
-    opacity:1;
-    transform:scale(1.08);
-    filter:
-      drop-shadow(0 0 12px rgba(255,193,7,.7))
-      drop-shadow(0 0 24px rgba(255,193,7,.4));
-  }
-
-  100%{
     opacity:1;
     transform:scale(1);
     filter:none;
   }
-}
-  0%{
-    opacity:0;
-    transform:scale(.65);
-    filter:drop-shadow(0 0 0 rgba(255,193,7,0));
+
+  /* Highlight starts */
+  15%{
+    transform:scale(1.05);
+    filter:
+      drop-shadow(0 0 8px rgba(255,193,7,.65))
+      drop-shadow(0 0 18px rgba(255,193,7,.35));
   }
 
-  45%{
-    opacity:1;
+  /* Strongest highlight */
+  35%{
     transform:scale(1.08);
-    filter:drop-shadow(0 0 18px rgba(255,193,7,.9))
-            drop-shadow(0 0 35px rgba(255,193,7,.55));
+    filter:
+      drop-shadow(0 0 12px rgba(255,193,7,.8))
+      drop-shadow(0 0 25px rgba(255,193,7,.45));
   }
 
+  /* Highlight fades */
+  65%{
+    transform:scale(1.04);
+    filter:
+      drop-shadow(0 0 7px rgba(255,193,7,.5))
+      drop-shadow(0 0 15px rgba(255,193,7,.25));
+  }
+
+  /* Back to completely normal */
   100%{
-    opacity:1;
     transform:scale(1);
     filter:none;
   }
