@@ -102,6 +102,8 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
 
 /* ---------- Opening logo animation ---------- */
 /* Use this class only for the logo on the landing/opening page */
+/* ---------- Premium opening logo effect ---------- */
+
 .gate-masthead .gate-logo{
   width:96px;
   height:96px;
@@ -110,43 +112,58 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
   display:block;
   flex-shrink:0;
 
-  animation:mvrLogoHighlight 4s ease-in-out 1;
+  /* Soft premium glow */
+  animation:mvrPremiumLogo 4.5s ease-in-out 1;
 }
 
-@keyframes mvrLogoHighlight{
+/* Soft gold light passes around the logo once */
+@keyframes mvrPremiumLogo{
 
-  /* Website opens — normal */
+  /* Start completely normal */
   0%{
-    opacity:1;
     transform:scale(1);
     filter:none;
   }
 
-  /* Highlight starts */
+  /* Light begins */
   15%{
-    transform:scale(1.05);
+    transform:scale(1.02);
     filter:
-      drop-shadow(0 0 8px rgba(255,193,7,.65))
-      drop-shadow(0 0 18px rgba(255,193,7,.35));
+      drop-shadow(0 0 4px rgba(255,193,7,.35));
   }
 
-  /* Strongest highlight */
-  35%{
-    transform:scale(1.08);
-    filter:
-      drop-shadow(0 0 12px rgba(255,193,7,.8))
-      drop-shadow(0 0 25px rgba(255,193,7,.45));
-  }
-
-  /* Highlight fades */
-  65%{
+  /* Light becomes visible */
+  30%{
     transform:scale(1.04);
     filter:
-      drop-shadow(0 0 7px rgba(255,193,7,.5))
-      drop-shadow(0 0 15px rgba(255,193,7,.25));
+      drop-shadow(0 0 7px rgba(255,193,7,.55))
+      drop-shadow(0 0 14px rgba(255,193,7,.25));
   }
 
-  /* Back to completely normal */
+  /* Premium peak */
+  45%{
+    transform:scale(1.055);
+    filter:
+      drop-shadow(0 0 9px rgba(255,193,7,.7))
+      drop-shadow(0 0 20px rgba(255,193,7,.35));
+  }
+
+  /* Light moves away */
+  60%{
+    transform:scale(1.03);
+    filter:
+      drop-shadow(0 0 6px rgba(255,193,7,.45))
+      drop-shadow(0 0 12px rgba(255,193,7,.2));
+  }
+
+  /* Almost finished */
+  75%{
+    transform:scale(1.01);
+    filter:
+      drop-shadow(0 0 3px rgba(255,193,7,.25));
+  }
+
+  /* Completely normal */
   100%{
     transform:scale(1);
     filter:none;
