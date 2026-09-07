@@ -1588,23 +1588,18 @@ function seedIfEmpty(key, seed){
     localStorage.setItem(key, JSON.stringify(seed));
   }
 }
-// Bumping this forces every browser to pick up the real roster below even
-// if it already had the old 3-student demo data saved. Any student added,
-// edited or removed later through the admin portal survives this — the
-// version check only fires once per browser, the first time it sees this
-// new number.
-const DB_VERSION = 2;
 function initDB(){
-  const seenVersion = Number(localStorage.getItem('mvr_db_version') || '0');
-  if(seenVersion < DB_VERSION){
-    localStorage.setItem(DB_KEYS.students, JSON.stringify(SEED_STUDENTS));
-    localStorage.setItem('mvr_db_version', String(DB_VERSION));
-  }
+  /*
+    Only create the student database when it does not already exist.
+    Never overwrite existing student data automatically.
+  */
+
   seedIfEmpty(DB_KEYS.students, SEED_STUDENTS);
   seedIfEmpty(DB_KEYS.presence, []);
   seedIfEmpty(DB_KEYS.reports, []);
   seedIfEmpty(DB_KEYS.notices, SEED_NOTICES);
 }
+
 initDB();
 
 function readStore(key){ try{ return JSON.parse(localStorage.getItem(key)) || []; }catch(e){ return []; } }
