@@ -100,12 +100,7 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
   flex-shrink:0;
 
   /* Premium logo highlight */
-  filter:
-    filter: 
-        drop-shadow(0 0 5px rgba(255,255,255,.85))
-        drop-shadow(0 0 10px rgba(255,193,7,.45))
-        drop-shadow(0 0 18px rgba(255,193,7,.20));
-
+ 
   animation:
     mvrLogoEntrance 1.4s cubic-bezier(.2,.8,.2,1) forwards,
     mvrLogoGlow 2.5s ease-in-out 1.4s infinite;
