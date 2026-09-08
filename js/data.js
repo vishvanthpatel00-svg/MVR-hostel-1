@@ -1746,21 +1746,21 @@ function addNotice(entry){
 }
 /* ---------- gallery photos (visitor "more photos" album) ---------- */
 async function getGalleryPhotos(){
-  const { data, error } = await sb.from('gallery_photos').select('*').order('sort_order', { ascending: true });
+  const { data, error } = await sb.from('hostel-gallery').select('*').order('sort_order', { ascending: true });
   if(error){ console.error('Could not load gallery photos', error); return []; }
   return data;
 }
 async function addGalleryPhoto(file, caption){
   const path = 'photos/' + Date.now() + '-' + file.name.replace(/\s+/g,'-');
-  const { error: upErr } = await sb.storage.from('gallery-photos').upload(path, file);
+  const { error: upErr } = await sb.storage.from('hostel-gallery').upload(path, file);
   if(upErr) return { error: upErr };
-  const { data: pub } = sb.storage.from('gallery-photos').getPublicUrl(path);
-  const { error: dbErr } = await sb.from('gallery_photos').insert([{ url: pub.publicUrl, caption: caption || '', storage_path: path }]);
+  const { data: pub } = sb.storage.from('hostel-gallery').getPublicUrl(path);
+  const { error: dbErr } = await sb.from('hostel-gallery').insert([{ url: pub.publicUrl, caption: caption || '', storage_path: path }]);
   return { error: dbErr || null };
 }
 async function deleteGalleryPhoto(id, storagePath){
-  if(storagePath){ await sb.storage.from('gallery-photos').remove([storagePath]); }
-  const { error } = await sb.from('gallery_photos').delete().eq('id', id);
+  if(storagePath){ await sb.storage.from('hostel-gallery').remove([storagePath]); }
+  const { error } = await sb.from('hostel-gallery').delete().eq('id', id);
   return { error };
 }
 /* ---------- session ---------- */
