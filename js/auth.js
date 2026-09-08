@@ -1,5 +1,5 @@
 /* Login page logic — tabs between Student and Admin (Warden) login */
-(function(){
+(async function(){
   const ADMIN_USER = 'admin';
   const ADMIN_PASS = 'admin@123';
 
@@ -23,7 +23,7 @@
     });
   });
 
-  form.addEventListener('submit', (e)=>{
+  form.addEventListener('submit', async (e)=>{
     e.preventDefault();
     const u = document.getElementById('username').value;
     const p = document.getElementById('password').value;
@@ -38,7 +38,7 @@
       }
       return;
     }
-
+    await loadStudents();
     const student = findStudentByLogin(u, p);
     if(student){
       setSession('student', student.id);
