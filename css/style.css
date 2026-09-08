@@ -505,3 +505,9 @@ table.data-table{ width:100%; border-collapse:collapse; background:var(--paper-2
 .gate-pass .gp-row{ display:flex; justify-content:space-between; padding:8px 0; border-top:1px dashed var(--line); font-size:.9rem; }
 .gate-pass .gp-row:first-of-type{ border-top:none; }
 @media print{ .no-print{ display:none !important; } body{ background:#fff; } }
+.gallery-modal .wrap{ max-height:88vh; overflow:auto; }
+.admin-photo-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; margin-top:16px; }
+.admin-photo-card{ border:1px solid var(--line); border-radius:6px; overflow:hidden; background:#fff; }
+.admin-photo-card img{ width:100%; height:120px; object-fit:cover; display:block; }
+.admin-photo-card .apc-cap{ padding:8px 10px; font-size:.8rem; color:var(--slate-soft); }
+.admin-photo-card .btn{ margin:0 10px 10px; }
