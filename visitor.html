@@ -56,6 +56,7 @@
       <a href="images/album/bath-full.jpg" data-caption="Hostel corridor"><img loading="lazy" src="images/album/bath-thumb.jpg" alt="Hostel corridor"><span class="cap">Corridor</span></a>
       <a href="images/album/games-full.jpg" data-caption="Courtyard seating area"><img loading="lazy" src="images/album/games-thumb.jpg" alt="Courtyard seating area"><span class="cap">Entrance</span></a>
       <a href="images/album/kitchen-full.jpg" data-caption="Kitchen"><img loading="lazy" src="images/album/kitchen-thumb.jpg" alt="Kitchen"><span class="cap">Kitchen</span></a>
+      <a href="#" id="moreAlbumTile" data-caption="More photos"><img loading="lazy" src="images/album/entrance-thumb.jpg" alt="More hostel photos"><span class="cap">📷 More Photos</span></a>
     </div>
     <p class="muted" style="font-size:.78rem;padding-top:14px;">Tap any photo to view it full-size.</p>
   </div>
@@ -66,6 +67,13 @@
   <img src="" alt="">
   <button class="lb-next" aria-label="Next">›</button>
   <div class="lb-cap"></div>
+  <div id="galleryModal" class="lightbox gallery-modal">
+  <button id="galleryModalClose" class="lb-close" aria-label="Close">✕</button>
+  <div class="wrap">
+    <h3 style="color:#fff;margin-bottom:16px;">More photos</h3>
+    <div id="galleryGrid" class="album"></div>
+  </div>
+</div>
 </div>
 <section class="section" id="facilities">
   <div class="wrap">
