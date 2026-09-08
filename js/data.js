@@ -1594,7 +1594,7 @@ function initDB(){
     Never overwrite existing student data automatically.
   */
 
-  seedIfEmpty(DB_KEYS.students, SEED_STUDENTS);
+  
   seedIfEmpty(DB_KEYS.presence, []);
   seedIfEmpty(DB_KEYS.reports, []);
   seedIfEmpty(DB_KEYS.notices, SEED_NOTICES);
@@ -1605,8 +1605,33 @@ initDB();
 function readStore(key){ try{ return JSON.parse(localStorage.getItem(key)) || []; }catch(e){ return []; } }
 function writeStore(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
 
-/* ---------- students ---------- */
-function getStudents(){ return readStore(DB_KEYS.students); }
+/* ---------- students (now backed by Supabase, not localStorage) ---------- */
+let STUDENTS_CACHE = [];
+
+function fromDbStudent(row){
+  return {
+    id: row.id, username: row.username, password: row.password, name: row.name,
+    course: row.course, block: row.block, room: row.room, sharing: row.sharing,
+    joined: row.joined, guardian: row.guardian, contact: row.contact,
+    aadhaar: row.aadhaar, bloodGroup: row.blood_group, rollNumber: row.roll_number,
+    loginReady: row.login_ready, registerNote: row.register_note
+  };
+}
+function toDbStudent(s){
+  return {
+    id: s.id, username: s.username, password: s.password, name: s.name,
+    course: s.course, block: s.block, room: s.room, sharing: s.sharing,
+    joined: s.joined, guardian: s.guardian, contact: s.contact,
+    aadhaar: s.aadhaar, blood_group: s.bloodGroup, roll_number: s.rollNumber,
+    login_ready: s.loginReady, register_note: s.registerNote
+  };
+}
+async function loadStudents(){
+  const { data, error } = await sb.from('students').select('*');
+  if(error){ console.error('Could not load students from Supabase', error); STUDENTS_CACHE = []; return; }
+  STUDENTS_CACHE = data.map(fromDbStudent);
+}
+function getStudents(){ return STUDENTS_CACHE; }
 function findStudentByLogin(username, password){
   return getStudents().find(s => s.username.toLowerCase() === username.trim().toLowerCase() && s.password === password);
 }
@@ -1620,9 +1645,7 @@ function nextStudentId(){
   const next = (nums.length ? Math.max(...nums) : 0) + 1;
   return 'MVR26-' + String(next).padStart(3, '0');
 }
-// Adds a new student. `data` should have at least name, room and username;
-// anything left out defaults sensibly. Returns the new student record.
-function addStudent(data){
+async function addStudent(data){
   const all = getStudents();
   const rec = {
     id: nextStudentId(),
@@ -1633,28 +1656,27 @@ function addStudent(data){
     ...data
   };
   rec.loginReady = !!(rec.username && rec.username.trim());
+  const { error } = await sb.from('students').insert([toDbStudent(rec)]);
+  if(error){ console.error('Could not save student to Supabase', error); return null; }
   all.push(rec);
-  writeStore(DB_KEYS.students, all);
   return rec;
 }
-// Updates an existing student by id. Only the fields present in `changes`
-// are touched — everything else on the record is left as-is.
-function updateStudent(id, changes){
+async function updateStudent(id, changes){
   const all = getStudents();
   const rec = all.find(s => s.id === id);
   if(!rec) return null;
   Object.assign(rec, changes);
   rec.loginReady = !!(rec.username && rec.username.trim());
-  writeStore(DB_KEYS.students, all);
+  const { error } = await sb.from('students').update(toDbStudent(rec)).eq('id', id);
+  if(error){ console.error('Could not update student in Supabase', error); return null; }
   return rec;
 }
-// Removes a student (e.g. they've left the hostel). Also clears any of
-// their presence records so they don't linger in the headcount.
-function deleteStudent(id){
-  writeStore(DB_KEYS.students, getStudents().filter(s => s.id !== id));
+async function deleteStudent(id){
+  const { error } = await sb.from('students').delete().eq('id', id);
+  if(error){ console.error('Could not delete student from Supabase', error); return; }
+  STUDENTS_CACHE = getStudents().filter(s => s.id !== id);
   writeStore(DB_KEYS.presence, readStore(DB_KEYS.presence).filter(p => p.studentId !== id));
 }
-
 /* Never render the raw aadhaar field — always go through this. */
 function maskAadhaar(number){
   if(!number) return '—';
@@ -1722,7 +1744,25 @@ function addNotice(entry){
   all.push({ date: new Date().toISOString().slice(0,10), ...entry });
   writeStore(DB_KEYS.notices, all);
 }
-
+/* ---------- gallery photos (visitor "more photos" album) ---------- */
+async function getGalleryPhotos(){
+  const { data, error } = await sb.from('gallery_photos').select('*').order('sort_order', { ascending: true });
+  if(error){ console.error('Could not load gallery photos', error); return []; }
+  return data;
+}
+async function addGalleryPhoto(file, caption){
+  const path = 'photos/' + Date.now() + '-' + file.name.replace(/\s+/g,'-');
+  const { error: upErr } = await sb.storage.from('gallery-photos').upload(path, file);
+  if(upErr) return { error: upErr };
+  const { data: pub } = sb.storage.from('gallery-photos').getPublicUrl(path);
+  const { error: dbErr } = await sb.from('gallery_photos').insert([{ url: pub.publicUrl, caption: caption || '', storage_path: path }]);
+  return { error: dbErr || null };
+}
+async function deleteGalleryPhoto(id, storagePath){
+  if(storagePath){ await sb.storage.from('gallery-photos').remove([storagePath]); }
+  const { error } = await sb.from('gallery_photos').delete().eq('id', id);
+  return { error };
+}
 /* ---------- session ---------- */
 function setSession(role, id){ sessionStorage.setItem(DB_KEYS.session, JSON.stringify({ role, id })); }
 function getSession(){ try{ return JSON.parse(sessionStorage.getItem(DB_KEYS.session)); }catch(e){ return null; } }
