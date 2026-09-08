@@ -1,4 +1,4 @@
-(function(){
+(async function(){
   const session = getSession();
   if(!session || session.role !== 'admin'){
     window.location.href = 'login.html';
@@ -67,11 +67,11 @@
       </tr>`).join('') || `<tr><td colspan="7" class="empty-state">No students match that search.</td></tr>`;
 
     document.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click', ()=> openStudentModal(b.dataset.edit)));
-    document.querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click', async ()=>{
       const s = getStudentById(b.dataset.delete);
       if(!s) return;
       if(confirm(`Remove ${s.name} (Room ${s.room}) from the hostel roster? This can't be undone.`)){
-        deleteStudent(s.id);
+        await deleteStudent(s.id);
         populateRoomFilter();
         renderStudents();
         renderStats();
@@ -120,7 +120,7 @@
   document.getElementById('studentModalCancel').addEventListener('click', closeStudentModal);
   studentModal.addEventListener('click', (e)=>{ if(e.target === studentModal) closeStudentModal(); });
 
-  studentForm.addEventListener('submit', (e)=>{
+  studentForm.addEventListener('submit', async (e)=>{
     e.preventDefault();
     const id = document.getElementById('sfId').value;
     const contact = document.getElementById('sfContact').value.trim();
@@ -141,9 +141,9 @@
       registerNote: document.getElementById('sfNote').value.trim()
     };
     if(id){
-      updateStudent(id, payload);
+      await updateStudent(id, payload);
     }else{
-      addStudent(payload);
+      await addStudent(payload);
     }
     closeStudentModal();
     populateRoomFilter();
@@ -225,10 +225,42 @@
     renderNoticesAdmin();
   });
 
+   /* ---- photos (visitor "more photos" album) ---- */
+  async function loadGalleryAdmin(){
+    const grid = document.getElementById('adminPhotoGrid');
+    grid.innerHTML = '<p class="muted">Loading…</p>';
+    const photos = await getGalleryPhotos();
+    grid.innerHTML = photos.map(p => `
+      <div class="admin-photo-card">
+        <img src="${p.url}" alt="${p.caption || ''}">
+        <div class="apc-cap">${p.caption || ''}</div>
+        <button class="btn btn-sm btn-outline" data-remove-photo="${p.id}" data-path="${p.storage_path || ''}">Remove</button>
+      </div>`).join('') || '<p class="muted">No extra photos uploaded yet.</p>';
+    document.querySelectorAll('[data-remove-photo]').forEach(b=>b.addEventListener('click', async ()=>{
+      if(!confirm('Remove this photo from the visitor gallery?')) return;
+      await deleteGalleryPhoto(b.dataset.removePhoto, b.dataset.path);
+      loadGalleryAdmin();
+    }));
+  }
+  document.getElementById('photoUploadForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const file = document.getElementById('photoFile').files[0];
+    const caption = document.getElementById('photoCaption').value.trim();
+    const msg = document.getElementById('photoUploadMsg');
+    if(!file){ msg.textContent = 'Choose a photo first.'; return; }
+    msg.textContent = 'Uploading…';
+    const { error } = await addGalleryPhoto(file, caption);
+    msg.textContent = error ? ('Upload failed: ' + error.message) : 'Photo added.';
+    if(!error){ e.target.reset(); loadGalleryAdmin(); }
+    setTimeout(()=> msg.textContent = '', 3000);
+  });
+
+  await loadStudents();
   renderStats();
   populateRoomFilter();
   renderStudents();
   renderHeadcount();
   renderReports();
   renderNoticesAdmin();
+  loadGalleryAdmin();
 })();
