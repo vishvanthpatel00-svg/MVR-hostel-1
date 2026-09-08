@@ -1,9 +1,10 @@
-(function(){
+(async function(){
   const session = getSession();
   if(!session || session.role !== 'student'){
     window.location.href = 'login.html';
     return;
   }
+  await loadStudents();
   const student = getStudentById(session.id);
   if(!student){ clearSession(); window.location.href = 'login.html'; return; }
 
