@@ -34,8 +34,17 @@
     <button class="tab-btn" data-tab="tab-outings">Headcount</button>
     <button class="tab-btn" data-tab="tab-reports">Reports</button>
     <button class="tab-btn" data-tab="tab-notices">Notices</button>
+    <button class="tab-btn" data-tab="tab-photos">Photos</button>
   </div>
-
+<div id="tab-photos" class="tab-panel">
+  <form id="photoUploadForm">
+    <div class="field"><label for="photoFile">Photo</label><input id="photoFile" type="file" accept="image/*" required></div>
+    <div class="field"><label for="photoCaption">Caption (optional)</label><input id="photoCaption" type="text"></div>
+    <button class="btn btn-ink" type="submit">Add photo</button>
+    <span id="photoUploadMsg" class="muted" style="margin-left:10px;"></span>
+  </form>
+  <div id="adminPhotoGrid" class="admin-photo-grid"></div>
+</div>
   <div id="tab-students" class="tab-panel active">
     <div class="admin-toolbar">
       <input id="studentSearch" type="text" placeholder="Search name, ID or room…" style="min-width:220px;">
