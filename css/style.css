@@ -515,15 +515,29 @@ table.data-table{ width:100%; border-collapse:collapse; background:var(--paper-2
 .person-badge{ display:flex; align-items:center; gap:12px; flex:none; }
 
 .person-badge-photo{
-  width:88px; height:88px; border-radius:50%; overflow:hidden; flex:none;
+  width:110px; height:110px;
+  border-radius:12px;
+  overflow:hidden;
+  flex:none;
   border:2px solid var(--amber);
   box-shadow:0 8px 20px rgba(0,0,0,.35);
-  background:var(--ink); /* shows through the feathered edge, so it blends */
+  background:var(--ink); /* photo's blurred backdrop fades into this */
 }
 .person-badge-photo img{
   width:100%; height:100%; object-fit:cover; display:block;
-  -webkit-mask-image:radial-gradient(circle at 50% 42%, #000 58%, transparent 88%);
-  mask-image:radial-gradient(circle at 50% 42%, #000 58%, transparent 88%);
+  -webkit-mask-image:radial-gradient(120% 120% at 50% 38%, #000 62%, transparent 100%);
+  mask-image:radial-gradient(120% 120% at 50% 38%, #000 62%, transparent 100%);
+}
+.photo-venu img{ object-position:center 15%; }
+.photo-vijay img{ object-position:22% 28%; }
+
+.person-badge-name{ font-family:var(--f-body); color:#fff; line-height:1.3; }
+.person-badge-name b{ display:block; font-size:.92rem; font-weight:600; }
+.person-badge-name small{ display:block; font-family:var(--f-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--amber); margin-top:3px; }
+
+@media (max-width:640px){
+  .person-badge-photo{ width:74px; height:74px; }
+  .person-badge-name small{ display:none; }
 }
 /* crop each source photo to just the face — tweak the % if the crop looks off */
 .photo-venu img{ object-position:center 18%; }
