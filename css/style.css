@@ -198,8 +198,8 @@ button, input, select, textarea{ font-family:inherit; font-size:1rem; }
 
 .gate-masthead{ background:var(--ink); border-bottom:3px solid var(--amber); padding:16px 0; }
 .gate-masthead .wrap{ display:flex; align-items:center; }
-.gate-masthead .brand-name{ color:#fff; }
-
+.gate-masthead .brand-name{ color:#fff; font-size:1.9rem; font-weight:700; }
+.gate-masthead .brand-name small{ font-size:.85rem; letter-spacing:.14em; }
 .gate-hero{ text-align:center; padding:72px 24px 8px; }
 .gate-hero .eyebrow{ color:var(--amber-deep); }
 .gate-hero h1{ color:var(--ink); font-size:clamp(2rem,4.6vw,3.1rem); margin-top:.3em; }
@@ -508,6 +508,21 @@ table.data-table{ width:100%; border-collapse:collapse; background:var(--paper-2
 .gallery-modal .wrap{ max-height:88vh; overflow:auto; }
 .admin-photo-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; margin-top:16px; }
 .admin-photo-card{ border:1px solid var(--line); border-radius:6px; overflow:hidden; background:#fff; }
+/* ---- founder / advocate photo cards, top-right of the opening header ---- */
+.gate-masthead, .hero-visitor{ position:relative; }
+.person-badge{
+  position:absolute; top:14px; right:24px;
+  border:2px solid var(--amber);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(0,0,0,.4);
+  line-height:0;
+}
+.person-badge img{ display:block; width:130px; height:auto; }
+@media (max-width:640px){
+  .person-badge{ top:10px; right:14px; }
+  .person-badge img{ width:82px; }
+}
 .admin-photo-card img{ width:100%; height:120px; object-fit:cover; display:block; }
 .admin-photo-card .apc-cap{ padding:8px 10px; font-size:.8rem; color:var(--slate-soft); }
 .admin-photo-card .btn{ margin:0 10px 10px; }
