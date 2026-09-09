@@ -536,8 +536,9 @@ table.data-table{ width:100%; border-collapse:collapse; background:var(--paper-2
 .person-badge-name small{ display:block; font-family:var(--f-mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--amber); margin-top:3px; }
 
 @media (max-width:640px){
-  .person-badge-photo{ width:74px; height:74px; }
-  .person-badge-name small{ display:none; }
+  .person-badge-photo{ width:60px; height:60px; }
+  .person-badge-name b{ font-size:.78rem; }
+  .person-badge-name small{ font-size:.6rem; }
 }
 /* crop each source photo to just the face — tweak the % if the crop looks off */
 .photo-venu img{ object-position:center 18%; }
