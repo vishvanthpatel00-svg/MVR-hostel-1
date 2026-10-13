@@ -15,7 +15,8 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
+          URL="${SUPABASE_URL%/}"
           curl --fail-with-body --silent --show-error \
-            -X GET "$SUPABASE_URL/rest/v1/" \
+            -X GET "$URL/rest/v1/" \
             -H "apikey: $SUPABASE_KEY" \
             -H "Authorization: Bearer $SUPABASE_KEY"
