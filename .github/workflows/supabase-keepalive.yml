@@ -17,9 +17,8 @@ jobs:
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
           curl --fail-with-body --silent --show-error \
-            --request POST \
-            "$SUPABASE_URL/rest/v1/rpc/keep_alive" \
-            --header "apikey: $SUPABASE_KEY" \
-            --header "Authorization: Bearer $SUPABASE_KEY" \
+            -X GET "$SUPABASE_URL/rest/v1/YOUR_TABLE_NAME?select=id&limit=1" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_KEY"
             --header "Content-Type: application/json" \
             --data '{}'
